@@ -9,6 +9,7 @@ public interface Url {
 	 */
 	String getRawUrl();
 
+
 	/**
 	 * @return Returns the path of the url, without parameter.
 	 */
