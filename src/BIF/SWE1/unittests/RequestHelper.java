@@ -28,7 +28,8 @@ public final class RequestHelper {
 	}
 
 	public static InputStream getValidRequestStream(String url, String method,
-			String host, String[][] header, String body) throws Exception {
+			String host, String[][] header, String body) throws Exception
+	{
 		byte[] bodyBytes = null;
         if (body != null)
         {

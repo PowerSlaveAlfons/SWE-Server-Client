@@ -3,14 +3,34 @@ package BIF.SWE1;
 import BIF.SWE1.interfaces.Request;
 import BIF.SWE1.interfaces.Url;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Scanner;
 
-public class RequestManager implements Request {
+public class RequestManager implements Request
+{
+
+    private InputStream inStream;
+    private boolean isValid = false;
+
+    RequestManager(InputStream in)
+    {
+        this.inStream = in;
+
+        Scanner s = new Scanner(in).useDelimiter("\\A"); //credits to StackOverFlow
+        String result = s.hasNext() ? s.next() : "";
+        System.out.println(result);
+        if(result.charAt(0) == 'G') // THIS IS ABSOLUTELY NOT OKAY HOLY SHIT
+            this.isValid = true;
+
+    }
+
     @Override
     public boolean isValid()
     {
-        return false;
+        return this.isValid;
     }
 
     @Override

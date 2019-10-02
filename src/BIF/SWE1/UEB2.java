@@ -1,5 +1,6 @@
 package BIF.SWE1;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import BIF.SWE1.interfaces.Request;
@@ -22,7 +23,7 @@ public class UEB2
 
 	public Request getRequest(InputStream inputStream)
 	{
-		return new RequestManager();
+		return new RequestManager(inputStream);
 	}
 
 	public Response getResponse()
