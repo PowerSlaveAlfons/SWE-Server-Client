@@ -5,6 +5,7 @@ import java.io.InputStream;
 import BIF.SWE1.interfaces.Request;
 import BIF.SWE1.interfaces.Response;
 import BIF.SWE1.interfaces.Url;
+import BIF.SWE1.URLManager;
 
 public class UEB2 {
 
@@ -13,14 +14,14 @@ public class UEB2 {
 	}
 
 	public Url getUrl(String s) {
-		return null;
+	    return new URLManager(s);
 	}
 
 	public Request getRequest(InputStream inputStream) {
-		return null;
+		return new RequestManager();
 	}
 
 	public Response getResponse() {
-		return null;
+		return new ResponseManager();
 	}
 }
