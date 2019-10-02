@@ -7,21 +7,26 @@ import BIF.SWE1.interfaces.Response;
 import BIF.SWE1.interfaces.Url;
 import BIF.SWE1.URLManager;
 
-public class UEB2 {
+public class UEB2
+{
 
-	public void helloWorld() {
+	public void helloWorld()
+	{
 
 	}
 
-	public Url getUrl(String s) {
+	public Url getUrl(String s)
+	{
 	    return new URLManager(s);
 	}
 
-	public Request getRequest(InputStream inputStream) {
+	public Request getRequest(InputStream inputStream)
+	{
 		return new RequestManager();
 	}
 
-	public Response getResponse() {
+	public Response getResponse()
+	{
 		return new ResponseManager();
 	}
 }

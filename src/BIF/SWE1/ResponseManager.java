@@ -4,14 +4,17 @@ import BIF.SWE1.interfaces.Response;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseManager implements Response
 {
+    private int StatusCode = -1;
+    private Map<String, String> Headers;
     @Override
     public Map<String, String> getHeaders()
     {
-        return null;
+        return this.Headers;
     }
 
     @Override
@@ -35,25 +38,40 @@ public class ResponseManager implements Response
     @Override
     public int getStatusCode()
     {
-        return 0;
+        if (this.StatusCode == -1)
+            throw new IllegalArgumentException();
+        else return this.StatusCode;
     }
 
     @Override
     public void setStatusCode(int status)
     {
-
+        this.StatusCode = status;
     }
 
     @Override
     public String getStatus()
     {
-        return null;
+        switch (this.StatusCode)
+        {
+            case 200:
+                return "200 OK";
+            case 404:
+                return "404 NOT FOUND";
+            case 500:
+                return "500 INTERNAL SERVER ERROR";
+        }
+        return "";
     }
 
     @Override
     public void addHeader(String header, String value)
     {
-
+        if (this.Headers == null)
+        {
+            this.Headers = new HashMap<>();
+        }
+        this.Headers.put(header, value);
     }
 
     @Override
