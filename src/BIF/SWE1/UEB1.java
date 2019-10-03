@@ -7,11 +7,12 @@ import java.util.Map;
 
 public class UEB1 {
 
-	public Url getUrl(String path) {
+	public Url getUrl(String path)
+    {
 		return new URLManager(path);
-
 	}
 
-	public void helloWorld() {
+	public void helloWorld()
+    {
 	}
 }

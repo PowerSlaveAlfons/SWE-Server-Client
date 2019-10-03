@@ -136,4 +136,16 @@ public class UEB1Test extends AbstractTestFixture<UEB1> {
 
 		assertEquals(0, obj.getParameterCount());
 	}
+
+	@Test
+	public void url_should_return_filename() {
+		Url obj = createInstance().getUrl("/test.jpg");
+		assertEquals("test.jpg", obj.getFileName());
+	}
+
+	@Test
+	public void url_should_return_extension() {
+		Url obj = createInstance().getUrl("/test.jpg");
+		assertEquals("jpg", obj.getExtension());
+	}
 }

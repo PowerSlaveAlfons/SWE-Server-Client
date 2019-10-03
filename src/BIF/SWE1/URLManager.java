@@ -12,13 +12,16 @@ public class URLManager implements Url
     private String rawUrl;
     private String Path;
     private String Fragment;
+    private String FileName;
+    private String Extension;
     private HashMap<String, String> Parameters;
+    private String[] Segments;
     private boolean hasParameters = false;
     private boolean hasFragment = false;
 
-    URLManager(String a)
+    URLManager(String rawUrlIn)
     {
-        this.rawUrl = a;
+        this.rawUrl = rawUrlIn;
         this.Parameters = new HashMap<>();
         if (rawUrl != null)
         {
@@ -44,6 +47,9 @@ public class URLManager implements Url
                 this.Fragment = AuxUrl[1];
             }
             this.Path = AuxUrl[0].split("\\?")[0];
+            this.getSegments();
+            this.getFileName();
+            this.getExtension();
         }
     }
 
@@ -81,20 +87,31 @@ public class URLManager implements Url
     @Override
     public String[] getSegments()
     {
-        String AuxString = this.Path.substring(1);
-        return AuxString.split("/");
+        if (this.Segments == null)
+        {
+            String AuxString = this.Path.substring(1);
+
+            this.Segments = AuxString.split("/");
+        }
+        return this.Segments;
     }
 
     @Override
     public String getFileName()
     {
-        return null;
+        if (this.Segments != null)
+            this.FileName =  this.Segments[this.Segments.length-1];
+        else this.FileName = "";
+        return this.FileName;
     }
 
     @Override
     public String getExtension()
     {
-        return null;
+        if (this.FileName != null && this.FileName.split("\\.").length > 1)
+            this.Extension = this.FileName.split("\\.")[1];
+        else this.Extension = "";
+        return this.Extension;
     }
 
     @Override

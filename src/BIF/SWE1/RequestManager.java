@@ -14,6 +14,8 @@ public class RequestManager implements Request
 
     private InputStream inStream;
     private boolean isValid = false;
+    private Url url;
+    private String Method;
 
     RequestManager(InputStream in)
     {
@@ -22,9 +24,19 @@ public class RequestManager implements Request
         Scanner s = new Scanner(in).useDelimiter("\\A"); //credits to StackOverFlow
         String result = s.hasNext() ? s.next() : "";
         System.out.println(result);
-        if(result.charAt(0) == 'G') // THIS IS ABSOLUTELY NOT OKAY HOLY SHIT
+        if (result.contains("Connection") && result.contains("Host"))  //pseudo-validation
+        {
             this.isValid = true;
+            System.out.println("Result: " + result);
+            this.url = new URLManager(result.split("\\ ")[1]);
 
+            if (result.toLowerCase().contains("get"))
+                this.Method = "GET";
+            else if (result.toLowerCase().contains("post"))
+                this.Method = "POST";
+            else
+                this.isValid = false;
+        }
     }
 
     @Override
@@ -36,13 +48,13 @@ public class RequestManager implements Request
     @Override
     public String getMethod()
     {
-        return null;
+        return this.Method;
     }
 
     @Override
     public Url getUrl()
     {
-        return null;
+        return this.url;
     }
 
     @Override
