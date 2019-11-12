@@ -6,14 +6,18 @@ import BIF.SWE1.interfaces.Url;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class RequestManager implements Request
 {
 
+    private static ArrayList validMethods = new ArrayList<>(List.of("GET", "HEAD", "PUT", "CONNECT", "OPTIONS", "TRACE",
+            "POST", "PATCH", "DELETE"));
     private InputStream inStream;
-    private boolean isValid = false;
+    private boolean isValid;
     private Url url;
     private String Method;
 
@@ -21,22 +25,20 @@ public class RequestManager implements Request
     {
         this.inStream = in;
 
+
         Scanner s = new Scanner(in).useDelimiter("\\A"); //credits to StackOverFlow
         String result = s.hasNext() ? s.next() : "";
         System.out.println(result);
-        if (result.contains("Connection") && result.contains("Host"))  //pseudo-validation
-        {
-            this.isValid = true;
-            System.out.println("Result: " + result);
-            this.url = new URLManager(result.split("\\ ")[1]);
 
-            if (result.toLowerCase().contains("get"))
-                this.Method = "GET";
-            else if (result.toLowerCase().contains("post"))
-                this.Method = "POST";
-            else
-                this.isValid = false;
-        }
+        String[] RequestLines = result.split("\\n");
+        this.Method = RequestLines[0].split(" ")[0].toUpperCase();
+        this.isValid = validMethods.contains(this.Method);
+
+        if (result.split(" ").length > 1)
+            this.url = new URLManager(result.split(" ")[1]);
+        else
+            this.isValid = false;
+
     }
 
     @Override

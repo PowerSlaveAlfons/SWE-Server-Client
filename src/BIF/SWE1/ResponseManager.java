@@ -11,6 +11,12 @@ public class ResponseManager implements Response
 {
     private int StatusCode = -1;
     private Map<String, String> Headers;
+
+    ResponseManager()
+    {
+        this.Headers = new HashMap<>();
+    }
+
     @Override
     public Map<String, String> getHeaders()
     {
@@ -60,17 +66,15 @@ public class ResponseManager implements Response
                 return "404 NOT FOUND";
             case 500:
                 return "500 INTERNAL SERVER ERROR";
+            default:
+                return "";
         }
-        return "";
+
     }
 
     @Override
     public void addHeader(String header, String value)
     {
-        if (this.Headers == null)
-        {
-            this.Headers = new HashMap<>();
-        }
         this.Headers.put(header, value);
     }
 

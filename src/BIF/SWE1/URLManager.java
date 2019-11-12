@@ -23,14 +23,14 @@ public class URLManager implements Url
     {
         this.rawUrl = rawUrlIn;
         this.Parameters = new HashMap<>();
-        if (rawUrl != null)
+        if (this.rawUrl != null)
         {
-            String[] AuxUrl = rawUrl.split("\\?");
+            String[] AuxUrl = this.rawUrl.split("\\?");
             System.out.println(AuxUrl.length);
             if (AuxUrl.length == 1)
             {
                 this.Parameters.put("", "");
-                this.hasParameters = false; //redundant, I know, but eh
+                this.hasParameters = false; //redundant, I know, but eh0
             }
             else
             {
@@ -42,7 +42,7 @@ public class URLManager implements Url
                 this.hasParameters = true;
             }
             AuxUrl = rawUrl.split("#");
-            if (AuxUrl.length == 2 )
+            if (AuxUrl.length == 2)
             {
                 this.Fragment = AuxUrl[1];
             }
