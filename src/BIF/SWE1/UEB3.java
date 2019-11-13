@@ -13,11 +13,11 @@ public class UEB3 {
 	}
 
 	public Request getRequest(InputStream inputStream) {
-		return null;
+		return new RequestManager(inputStream);
 	}
 
 	public Response getResponse() {
-		return null;
+		return new ResponseManager();
 	}
 
 	public Plugin getTestPlugin() {

@@ -2,8 +2,11 @@ package BIF.SWE1;
 
 import BIF.SWE1.interfaces.Response;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +14,10 @@ public class ResponseManager implements Response
 {
     private int StatusCode = -1;
     private Map<String, String> Headers;
+    private String ContentType;
+    private String[] ContentLines;
+    private boolean hasContent = false;
+    private String ServerHeader = "BIF-SWE1-Server";
 
     ResponseManager()
     {
@@ -26,19 +33,21 @@ public class ResponseManager implements Response
     @Override
     public int getContentLength()
     {
-        return 0;
+        if(!this.hasContent)
+            return 0;
+        return this.ContentLines.length;
     }
 
     @Override
     public String getContentType()
     {
-        return null;
+        return this.ContentType;
     }
 
     @Override
     public void setContentType(String contentType)
     {
-
+        this.ContentType = contentType;
     }
 
     @Override
@@ -63,7 +72,7 @@ public class ResponseManager implements Response
             case 200:
                 return "200 OK";
             case 404:
-                return "404 NOT FOUND";
+                return "404 Not Found";
             case 500:
                 return "500 INTERNAL SERVER ERROR";
             default:
@@ -81,19 +90,20 @@ public class ResponseManager implements Response
     @Override
     public String getServerHeader()
     {
-        return null;
+        return this.ServerHeader;
     }
 
     @Override
     public void setServerHeader(String server)
     {
-
+        this.ServerHeader = server;
     }
 
     @Override
     public void setContent(String content)
     {
-
+        this.ContentLines = content.split("\\n");
+        this.hasContent = true;
     }
 
     @Override
@@ -111,6 +121,39 @@ public class ResponseManager implements Response
     @Override
     public void send(OutputStream network)
     {
+        if (this.StatusCode != 404 && !this.hasContent)
+            throw new IllegalArgumentException(); //What even is this meme and why does it work
+        OutputStreamWriter writer = new OutputStreamWriter(network, StandardCharsets.UTF_8);
+        try
+        {
+            writer.write("HTTP/1.1 " + this.getStatus() + "\n");
+            if (this.hasContent)
+            {
+                for (String str : this.ContentLines)
+                {
+                    writer.write(str);
+                }
+                writer.close();
+            }
+            else throw new IOException();
+        }
+        catch (IOException exec)
+        {
+           System.out.println("Error writing response.");
+        }
+        finally
+        {
+            try
+            {
+             writer.close();
+            }
+            catch (IOException exec)
+            {
+                System.out.println("DAS IS DOCH FALSCH OIDA");
+            }
+        }
+
 
     }
+
 }

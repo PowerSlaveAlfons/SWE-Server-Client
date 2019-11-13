@@ -6,10 +6,7 @@ import BIF.SWE1.interfaces.Url;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class RequestManager implements Request
 {
@@ -20,10 +17,13 @@ public class RequestManager implements Request
     private boolean isValid;
     private Url url;
     private String Method;
+    private Map<String, String> Headers;
 
     RequestManager(InputStream in)
     {
         this.inStream = in;
+
+        this.Headers = new HashMap<>();
 
 
         Scanner s = new Scanner(in).useDelimiter("\\A"); //credits to StackOverFlow
@@ -35,7 +35,10 @@ public class RequestManager implements Request
         this.isValid = validMethods.contains(this.Method);
 
         if (result.split(" ").length > 1)
+        {
             this.url = new URLManager(result.split(" ")[1]);
+            this.parseHeaders(RequestLines);
+        }
         else
             this.isValid = false;
 
@@ -62,19 +65,23 @@ public class RequestManager implements Request
     @Override
     public Map<String, String> getHeaders()
     {
-        return null;
+        return this.Headers;
     }
 
     @Override
     public int getHeaderCount()
     {
-        return 0;
+        for (Map.Entry<String, String> entry : this.Headers.entrySet()) {
+            System.out.println(entry.getKey() + ":" + entry.getValue());
+        }
+        System.out.println("Size:" + this.Headers.size());
+        return this.Headers.size();
     }
 
     @Override
     public String getUserAgent()
     {
-        return null;
+        return this.Headers.get("user-agent");
     }
 
     @Override
@@ -106,4 +113,14 @@ public class RequestManager implements Request
     {
         return new byte[0];
     }
+
+    private void parseHeaders(String[] Content)
+    {
+        for (String str : Content)
+        {
+            if (str.split(":").length > 1)
+                this.Headers.put(str.split(":")[0].toLowerCase(), str.split(":")[1].substring(1).toLowerCase());
+        }
+    }
+
 }
