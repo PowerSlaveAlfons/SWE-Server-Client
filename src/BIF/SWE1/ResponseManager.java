@@ -104,6 +104,8 @@ public class ResponseManager implements Response
     {
         this.ContentLines = content.split("\\n");
         this.hasContent = true;
+        if(this.ContentType == null)
+            this.ContentType = "text/plain";
     }
 
     @Override
@@ -119,39 +121,22 @@ public class ResponseManager implements Response
     }
 
     @Override
-    public void send(OutputStream network)
-    {
-        if (this.StatusCode != 404 && !this.hasContent)
-            throw new IllegalArgumentException(); //What even is this meme and why does it work
-        OutputStreamWriter writer = new OutputStreamWriter(network, StandardCharsets.UTF_8);
-        try
-        {
+    public void send(OutputStream network) {
+        if ((!this.hasContent && this.ContentType != null) || (this.hasContent && this.ContentType == null))
+            throw new IllegalStateException("ContentType and/or Content nonsense."); //What even is this meme and why does it work
+
+        try (OutputStreamWriter writer = new OutputStreamWriter(network, StandardCharsets.UTF_8)) {
             writer.write("HTTP/1.1 " + this.getStatus() + "\n");
-            if (this.hasContent)
-            {
-                for (String str : this.ContentLines)
-                {
+            if (this.hasContent) {
+                for (String str : this.ContentLines) {
                     writer.write(str);
                 }
                 writer.close();
-            }
-            else throw new IOException();
+            } else throw new IOException();
+        } catch (IOException exec) {
+            System.out.println("Error writing response.");
         }
-        catch (IOException exec)
-        {
-           System.out.println("Error writing response.");
-        }
-        finally
-        {
-            try
-            {
-             writer.close();
-            }
-            catch (IOException exec)
-            {
-                System.out.println("DAS IS DOCH FALSCH OIDA");
-            }
-        }
+
 
 
     }
