@@ -18,6 +18,8 @@ public class ResponseManager implements Response
     private String[] ContentLines;
     private boolean hasContent = false;
     private String ServerHeader = "BIF-SWE1-Server";
+    private byte[] ByteContent;
+    private byte[] ContentByteArray;
 
     ResponseManager()
     {
@@ -35,7 +37,7 @@ public class ResponseManager implements Response
     {
         if(!this.hasContent)
             return 0;
-        return this.ContentLines.length;
+        return this.ContentByteArray.length;
     }
 
     @Override
@@ -103,6 +105,7 @@ public class ResponseManager implements Response
     public void setContent(String content)
     {
         this.ContentLines = content.split("\\n");
+        this.ContentByteArray = content.getBytes(StandardCharsets.UTF_8);
         this.hasContent = true;
         if(this.ContentType == null)
             this.ContentType = "text/plain";
@@ -111,7 +114,7 @@ public class ResponseManager implements Response
     @Override
     public void setContent(byte[] content)
     {
-
+        this.ByteContent = content;
     }
 
     @Override
@@ -123,18 +126,25 @@ public class ResponseManager implements Response
     @Override
     public void send(OutputStream network) {
         if ((!this.hasContent && this.ContentType != null) || (this.hasContent && this.ContentType == null))
-            throw new IllegalStateException("ContentType and/or Content nonsense."); //What even is this meme and why does it work
+            throw new IllegalStateException("ContentType and/or Content nonsense.");
 
         try (OutputStreamWriter writer = new OutputStreamWriter(network, StandardCharsets.UTF_8)) {
             writer.write("HTTP/1.1 " + this.getStatus() + "\n");
-            if (this.hasContent) {
+            writer.write("Server: " + this.getServerHeader() + "\n");
+            for (Map.Entry<String,String> entry : this.Headers.entrySet())
+                writer.write(entry.getKey() + (": ") + (entry.getValue()) + ("\n"));
+            writer.write(getServerHeader() + "\n");
+            writer.write("\n");
+            if (this.hasContent && this.ContentType.contains("text")) {
                 for (String str : this.ContentLines) {
                     writer.write(str);
+                    System.out.println(str);
                 }
+                writer.write("\n");
                 writer.close();
             } else throw new IOException();
         } catch (IOException exec) {
-            System.out.println("Error writing response.");
+            System.out.println("Error writing response." + exec);
         }
 
 

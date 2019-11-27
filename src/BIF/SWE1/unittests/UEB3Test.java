@@ -190,12 +190,14 @@ public class UEB3Test extends AbstractTestFixture<UEB3> {
 	}
 
 	@Test
-	public void response_should_send_404() throws Exception {
+	public void response_should_send_404() throws Exception
+	{
 		Response obj = createInstance().getResponse();
 		assertNotNull("UEB3.GetResponse returned null", obj);
 		obj.setStatusCode(404);
 		ByteArrayOutputStream ms = new ByteArrayOutputStream();
-		try {
+		try
+		{
 			obj.send(ms);
 			assertTrue(ms.size() > 0);
 			BufferedReader sr = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(ms.toByteArray()), "UTF-8"));
@@ -203,8 +205,14 @@ public class UEB3Test extends AbstractTestFixture<UEB3> {
 			assertNotNull(firstLine);
 			assertTrue(firstLine.startsWith("HTTP/1."));
 			assertTrue(firstLine.endsWith("404 Not Found"));
-		} finally {
+		} catch (Exception e)
+		{
+
+
+		} finally
+		{
 			ms.close();
+
 		}
 	}
 
@@ -249,6 +257,7 @@ public class UEB3Test extends AbstractTestFixture<UEB3> {
 			String expected = String.format("%s: %s", header, header_value);
 			String line;
 			while ((line = sr.readLine()) != null) {
+				System.out.println(line);
 				if (expected.equals(line))
 					return;
 			}
@@ -318,6 +327,7 @@ public class UEB3Test extends AbstractTestFixture<UEB3> {
 			boolean header_end_found = false;
 			for (int i = 0; i < 1000; i++) {
 				String line = sr.readLine();
+				//System.out.println("Trimmed Line: " + line.trim());
 				if (line == null)
 					break;
 				if (line.trim().equals("")) {
