@@ -26,7 +26,7 @@ public class RequestManager implements Request
         this.Headers = new HashMap<>();
 
 
-        Scanner s = new Scanner(in).useDelimiter("\\A"); //credits to StackOverFlow
+        Scanner s = new Scanner(this.inStream).useDelimiter("\\A"); //credits to StackOverFlow
         String result = s.hasNext() ? s.next() : "";
         System.out.println(result);
 
@@ -99,7 +99,7 @@ public class RequestManager implements Request
     @Override
     public InputStream getContentStream()
     {
-        return null;
+        return this.inStream;
     }
 
     @Override

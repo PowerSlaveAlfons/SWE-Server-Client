@@ -9,18 +9,17 @@ import BIF.SWE1.interfaces.Response;
 public class UEB4 {
 
 	public void helloWorld() {
-
 	}
 
 	public Request getRequest(InputStream inputStream) {
-		return null;
+		return new RequestManager(inputStream);
 	}
 
 	public Response getResponse() {
-		return null;
+		return new ResponseManager();
 	}
 
 	public PluginManager getPluginManager() {
-		return null;
+		return new PluginManagerCreator();
 	}
 }
