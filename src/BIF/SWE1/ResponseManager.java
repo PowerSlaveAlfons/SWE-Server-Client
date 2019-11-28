@@ -107,6 +107,7 @@ public class ResponseManager implements Response
         this.ContentLines = content.split("\\n");
         this.ContentByteArray = content.getBytes(StandardCharsets.UTF_8);
         this.hasContent = true;
+        System.out.println("Length: " + this.ContentByteArray.length);
         if(this.ContentType == null)
             this.ContentType = "text/plain";
     }
@@ -138,7 +139,6 @@ public class ResponseManager implements Response
             if (this.hasContent && this.ContentType.contains("text")) {
                 for (String str : this.ContentLines) {
                     writer.write(str);
-                    System.out.println(str);
                 }
                 writer.write("\n");
                 writer.close();

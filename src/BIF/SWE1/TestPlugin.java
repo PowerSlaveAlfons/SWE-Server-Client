@@ -22,9 +22,9 @@ public class TestPlugin implements Plugin {
         System.out.println("THIS IS THE PATH YOU MONKEY: " + this.url.getPath());
         if (this.url.getParameter().containsKey("test_plugin"))
             return (float)0.5; //This is pain
-        if (this.url.getPath().contains("test") || this.url.getPath().contains("1"))
+        if (this.url.getPath().contains("test"))
             return (float)0.5;
-        if (this.url.getPath() == ("/"))
+        if (this.url.getPath().equals("/"))
             return (float)0.69;
 
         else return 0;

@@ -26,7 +26,6 @@ public class URLManager implements Url
         if (this.rawUrl != null)
         {
             String[] AuxUrl = this.rawUrl.split("\\?");
-            System.out.println(AuxUrl.length);
             if (AuxUrl.length == 1)
             {
                 this.Parameters.put("", "");

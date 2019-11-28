@@ -58,7 +58,7 @@ public class UEB3Test extends AbstractTestFixture<UEB3> {
 		UEB3 ueb = createInstance();
 		Plugin obj = ueb.getTestPlugin();
 		assertNotNull("UEB3.GetTestPlugin returned null", obj);
-		Request req = ueb.getRequest(RequestHelper.getValidRequestStream("/1"));
+		Request req = ueb.getRequest(RequestHelper.getValidRequestStream("/"));
 		assertNotNull("UEB3.GetRequest returned null", req);
 		float canHandle = obj.canHandle(req);
 		assertTrue(canHandle > 0 && canHandle <= 1);

@@ -3,9 +3,11 @@ package BIF.SWE1;
 import BIF.SWE1.interfaces.Request;
 import BIF.SWE1.interfaces.Url;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RequestManager implements Request
@@ -17,20 +19,25 @@ public class RequestManager implements Request
     private boolean isValid;
     private Url url;
     private String Method;
+    private String ContentType;
     private Map<String, String> Headers;
+    private int ContentLength;
+    private String Content;
 
     RequestManager(InputStream in)
     {
-        this.inStream = in;
 
+        this.inStream = in;
         this.Headers = new HashMap<>();
 
 
         Scanner s = new Scanner(this.inStream).useDelimiter("\\A"); //credits to StackOverFlow
         String result = s.hasNext() ? s.next() : "";
-        System.out.println(result);
+        //System.out.println(result);
 
         String[] RequestLines = result.split("\\n");
+        for (String str : RequestLines)
+            System.out.println(str);
         this.Method = RequestLines[0].split(" ")[0].toUpperCase();
         this.isValid = validMethods.contains(this.Method);
 
@@ -41,6 +48,14 @@ public class RequestManager implements Request
         }
         else
             this.isValid = false;
+        if (this.Headers.containsKey("content-length"))
+        {
+            this.ContentLength = Integer.parseInt(this.Headers.get("content-length"));
+        }
+        if (this.Headers.containsKey("content-type"))
+        {
+            this.ContentType = this.Headers.get("content-type");
+        }
 
     }
 
@@ -71,10 +86,6 @@ public class RequestManager implements Request
     @Override
     public int getHeaderCount()
     {
-        for (Map.Entry<String, String> entry : this.Headers.entrySet()) {
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-        System.out.println("Size:" + this.Headers.size());
         return this.Headers.size();
     }
 
@@ -87,19 +98,19 @@ public class RequestManager implements Request
     @Override
     public int getContentLength()
     {
-        return 0;
+        return this.ContentLength;
     }
 
     @Override
     public String getContentType()
     {
-        return null;
+        return this.ContentType;
     }
 
     @Override
     public InputStream getContentStream()
     {
-        return this.inStream;
+        return new ByteArrayInputStream(this.Content.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -116,11 +127,23 @@ public class RequestManager implements Request
 
     private void parseHeaders(String[] Content)
     {
+        boolean isContent = false;
         for (String str : Content)
         {
-            if (str.split(":").length > 1)
-                this.Headers.put(str.split(":")[0].toLowerCase(), str.split(":")[1].substring(1).toLowerCase());
+            if (!isContent) {
+                if (str.split(":").length > 1)
+                    this.Headers.put(str.split(":")[0].toLowerCase(), str.split(":")[1].trim().toLowerCase());
+                if (str.trim().isEmpty())
+                    isContent = true;
+            }
+            else
+            {
+                System.out.println("I've reached the body");
+                this.Content += str;
+            }
+
         }
+
     }
 
 }
