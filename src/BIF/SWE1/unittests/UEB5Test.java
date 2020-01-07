@@ -181,11 +181,11 @@ public class UEB5Test extends AbstractTestFixture<UEB5> {
 		assertNotNull("UEB5.GetPluginManager returned null", obj);
 		assertNotNull(obj.getPlugins());
 		long count = StreamSupport.stream(obj.getPlugins().spliterator(), false).count();
-		obj.add("BIF.SWE1.unittests.mocks.Ueb5TestPlugin");
+		obj.add("TestPlugin");
 		assertEquals(count + 1, StreamSupport.stream(obj.getPlugins().spliterator(), false).count());
 		boolean found = false;
 		for (Plugin p : obj.getPlugins()) {
-			if (p instanceof BIF.SWE1.unittests.mocks.Ueb5TestPlugin)
+			if (p instanceof BIF.SWE1.Plugins.TestPlugin)
 				found = true;
 		}
 
@@ -224,7 +224,7 @@ public class UEB5Test extends AbstractTestFixture<UEB5> {
 	private final static String static_file_content = "Hello World!";
 
 	private void setupStaticFilePlugin(UEB5 ueb, String fileName) throws FileNotFoundException {
-		final File folder = new File("tmp-static-files");
+		final File folder = new File("statics/tmp-static-files");
 
 		if (!folder.exists()) {
 			folder.mkdirs();

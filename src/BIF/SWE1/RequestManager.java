@@ -116,7 +116,7 @@ public class RequestManager implements Request
     @Override
     public String getContentString()
     {
-        return null;
+        return this.Content;
     }
 
     @Override

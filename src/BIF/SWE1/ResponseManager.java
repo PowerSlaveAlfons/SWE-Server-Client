@@ -21,7 +21,7 @@ public class ResponseManager implements Response
     private byte[] ByteContent;
     private byte[] ContentByteArray;
 
-    ResponseManager()
+    public ResponseManager()
     {
         this.Headers = new HashMap<>();
     }
@@ -115,7 +115,8 @@ public class ResponseManager implements Response
     @Override
     public void setContent(byte[] content)
     {
-        this.ByteContent = content;
+        this.ContentByteArray = content;
+        this.hasContent = true;
     }
 
     @Override
@@ -142,7 +143,16 @@ public class ResponseManager implements Response
                 }
                 writer.write("\n");
                 writer.close();
-            } else throw new IOException();
+            }
+            else if (this.hasContent && this.ContentType.contains("file"))
+            {
+                for (byte b : this.ContentByteArray)
+                {
+                    writer.write(b);
+                }
+                writer.close();
+            }
+            else throw new IOException();
         } catch (IOException exec) {
             System.out.println("Error writing response." + exec);
         }

@@ -3,6 +3,7 @@ package BIF.SWE1;
 import java.io.InputStream;
 import java.time.LocalDate;
 
+import BIF.SWE1.Plugins.ToLowerPlugin;
 import BIF.SWE1.interfaces.Plugin;
 import BIF.SWE1.interfaces.PluginManager;
 import BIF.SWE1.interfaces.Request;
@@ -14,11 +15,11 @@ public class UEB6 {
 	}
 
 	public Request getRequest(InputStream inputStream) {
-		return null;
+		return new RequestManager(inputStream);
 	}
 
 	public PluginManager getPluginManager() {
-		return null;
+		return new PluginManagerCreator();
 	}
 
 	public Plugin getTemperaturePlugin() {
@@ -30,7 +31,7 @@ public class UEB6 {
 	}
 
 	public Plugin getToLowerPlugin() {
-		return null;
+		return new ToLowerPlugin();
 	}
 
 	public String getTemperatureUrl(LocalDate localDate, LocalDate localDate1) {
@@ -46,6 +47,6 @@ public class UEB6 {
 	}
 
 	public String getToLowerUrl() {
-		return null;
+		return "ToLower";
 	}
 }

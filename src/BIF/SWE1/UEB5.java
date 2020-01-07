@@ -2,6 +2,7 @@ package BIF.SWE1;
 
 import java.io.InputStream;
 
+import BIF.SWE1.Plugins.StaticFilePlugin;
 import BIF.SWE1.interfaces.Plugin;
 import BIF.SWE1.interfaces.PluginManager;
 import BIF.SWE1.interfaces.Request;
@@ -13,15 +14,15 @@ public class UEB5 {
 	}
 
 	public Request getRequest(InputStream inputStream) {
-		return null;
+		return new RequestManager(inputStream);
 	}
 
 	public PluginManager getPluginManager() {
-		return null;
+		return new PluginManagerCreator();
 	}
 
 	public Plugin getStaticFilePlugin() {
-		return null;
+		return new StaticFilePlugin();
 	}
 
 	public void setStatiFileFolder(String s) {
@@ -29,6 +30,6 @@ public class UEB5 {
 	}
 
 	public String getStaticFileUrl(String s) {
-		return null;
+		return "statics/tmp-static-files/" + s;
 	}
 }

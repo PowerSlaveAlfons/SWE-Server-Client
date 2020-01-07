@@ -1,6 +1,7 @@
 package BIF.SWE1.interfaces;
 
 import java.lang.Iterable;
+import java.util.List;
 
 public interface PluginManager {
     /**
@@ -8,7 +9,7 @@ public interface PluginManager {
      * TODO: Refactor to List<Plugin>, Enumeration is deprecated 
      * @return
      */
-	Iterable<Plugin> getPlugins();
+	List<Plugin> getPlugins();
 	
 	
     /**
