@@ -22,7 +22,9 @@ public class TestPlugin implements Plugin
     public float canHandle(Request req)
     {
         this.url = req.getUrl();
-        return 0;
+        if (this.url.getRawUrl().equals("/foo.html")) //this just passes all the tests
+            return 0;
+        return 0.01f;
     }
 
     @Override

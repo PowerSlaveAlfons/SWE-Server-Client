@@ -2,6 +2,7 @@ package BIF.SWE1;
 
 import BIF.SWE1.interfaces.Plugin;
 import BIF.SWE1.interfaces.PluginManager;
+import BIF.SWE1.interfaces.Request;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,9 +27,9 @@ public class PluginManagerCreator implements PluginManager {
         add("AllElseFailsPlugin");
        // add("NaviPlugin");
         //add("TemperaturePlugin");
-       // add("ToLowerPlugin");
+        add("ToLowerPlugin");
         add("StaticFilePlugin");
-        //add("TestPlugin");
+        add("TestPlugin");
     }
     @Override
     public List<Plugin> getPlugins() {
@@ -77,6 +78,20 @@ public class PluginManagerCreator implements PluginManager {
             }
             return foundPlugins;
         }
+    }
+
+    public Plugin getBestHandlePlugin(Request request) {
+        float maxHandleValue = 0.0f;
+        Plugin suitablePlugin = null;
+        for (Plugin plugin : Plugins) {
+            float handleValue = plugin.canHandle(request);
+            System.out.println("checking " + plugin);
+            if (handleValue > maxHandleValue) {
+                maxHandleValue = handleValue;
+                suitablePlugin = plugin;
+            }
+        }
+        return suitablePlugin;
     }
 
 

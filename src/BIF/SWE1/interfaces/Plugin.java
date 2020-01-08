@@ -6,7 +6,7 @@ public interface Plugin {
 	 * handle the request. The plugin with the highest score will execute the
 	 * request.
 	 * 
-	 * @param req
+	 * @param Request The Http Request
 	 * @return A score between 0 and 1
 	 */
 	float canHandle(Request req);
@@ -14,7 +14,7 @@ public interface Plugin {
 	/**
 	 * Called by the server when the plugin should handle the request.
 	 * 
-	 * @param req
+	 * @param The http Request
 	 * @return A new response object.
 	 */
 	Response handle(Request req);

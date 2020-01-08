@@ -20,12 +20,13 @@ public class ToLowerPlugin implements Plugin
     @Override
     public Response handle(Request req)
     {
-        String ToConvert = req.getContentString().substring(9); //Yikes, this is a dirty hack
+        String ToConvert = req.getContentString().substring(5); //No clue what the text= signifies here ...
 
         System.out.println("ToConvert: " + ToConvert);
         Response resp = new ResponseManager();
         resp.setStatusCode(200);
         resp.setContentType("text");
+        //resp.setMethod(POST);
         if (ToConvert.equals(""))
             resp.setContent("Bitte geben Sie einen Text ein");
         else
