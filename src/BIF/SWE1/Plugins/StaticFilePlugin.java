@@ -22,7 +22,7 @@ public class StaticFilePlugin implements Plugin
     public float canHandle(Request req)
     {
         String auxFile = req.getUrl().getPath().substring(1);
-        String auxPath = "s" + auxFile;
+        String auxPath = auxFile;
 
         File file = new File(auxPath);
         System.out.println("Path is " + auxPath);
@@ -45,7 +45,7 @@ public class StaticFilePlugin implements Plugin
         if (this.FileReq.isEmpty())
             this.PathReq = directory + "index.html";
         else
-            this.PathReq =  "s" +  FileReq;
+            this.PathReq =  FileReq;
 
         byte[] content = getContent();
 
@@ -53,9 +53,13 @@ public class StaticFilePlugin implements Plugin
         String fileType = PathReq.substring(PathReq.lastIndexOf("."));
 
         Response Resp = new ResponseManager();
-        Resp.setContentType("file");
+
         Resp.setStatusCode(200);
         Resp.setContent(content);
+        if (req.getUrl().getExtension() == "html")
+            Resp.setContentType("text/html");
+        else
+            Resp.setContentType("file");
 
         return Resp;
     }

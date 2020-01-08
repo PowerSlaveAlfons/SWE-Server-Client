@@ -41,18 +41,25 @@ public class RequestManager implements Request
         this.InReader = new InputStreamReader(in);
         reader = new BufferedReader(this.InReader);
         System.out.print("MEMES");
-        try{ while ((strCurrentLine = this.reader.readLine()) != null) {
-            result += strCurrentLine + "\r\n";}
-            System.out.print("MEMES2");
+       /* try{ while ((strCurrentLine = this.reader.readLine()) != null)
+        {
+            result += strCurrentLine + "\r\n";
+            System.out.print("MEMES2");}
+
         }
         catch(IOException e) {System.out.println(e.getMessage());};
 
-        System.out.print("Memes escaped");
+        System.out.print("Memes escaped");*/
 
        // Scanner s = new Scanner(this.inStream).useDelimiter("\\A"); //credits to StackOverFlow
        // String result = s.hasNext() ? s.next() : "";
         //System.out.println(result);
 
+
+        try {
+            result = this.reader.readLine();
+            this.parseHeaders(reader);
+        } catch (IOException e) {};
 
         if (result.split("\\n\\s*\\n", 2).length > 1)
         {
@@ -226,5 +233,46 @@ public class RequestManager implements Request
         }
 
     }
+    private void parseHeaders(BufferedReader reader) throws IOException {
+        String line = reader.readLine();
+        if (line == null)
+            return;
+        System.out.println(line);
 
+        while (line.length() != 0) {
+            String key = line.substring(0, line.indexOf(":")).trim().toLowerCase();
+            String value = line.substring(line.indexOf(":") + 2).trim();
+            Headers.put(key, value);
+            line = reader.readLine();
+            //headersCount++;
+        }
+    }
+
+    private void parsePostContent(BufferedReader reader) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+
+        // ready() checks if something is ready to be read (works with nextChar and nChars fields)
+        while (reader.ready() && (i = reader.read()) != -1) {
+            builder.append((char) i);
+        }
+
+        Content = builder.toString();
+    }
+
+    private void parseGetContent(BufferedReader reader) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        String line = "";
+
+        // ready() checks if something is ready to be read (works with nextChar and nChars fields)
+        if (reader.ready())
+            line = reader.readLine();
+
+        while (line != null && !line.equals("")) {
+            builder.append(line);
+            line = reader.readLine();
+        }
+
+        Content = builder.toString();
+    }
 }

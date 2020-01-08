@@ -203,8 +203,9 @@ public class ResponseManager implements Response
         try (OutputStreamWriter writer = new OutputStreamWriter(network, StandardCharsets.UTF_8)) {
             writer.write("HTTP/1.1 " + this.getStatus() + "\n");
             writer.write("Server: " + this.getServerHeader() + "\n");
-            for (Map.Entry<String,String> entry : this.Headers.entrySet())
+            for (Map.Entry<String,String> entry : this.Headers.entrySet()) {
                 writer.write(entry.getKey() + (": ") + (entry.getValue()) + ("\n"));
+            }
             writer.write(getServerHeader() + "\n");
             writer.write("\n");
             if (this.hasContent && this.ContentType.contains("text")) {
@@ -224,8 +225,8 @@ public class ResponseManager implements Response
             }
             else if (this.hasContent)
             {
-                writer.close();
                 network.write(this.ContentByteArray);
+                writer.close();
             }
             else throw new IOException();
         } catch (IOException exec) {
