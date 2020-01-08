@@ -11,6 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Takes a request with an URL ('/statics/...') and returns the file found at that URL; If no file was found
+ * it returns the index.html
+ */
 public class StaticFilePlugin implements Plugin
 {
     private final String directory = "statics/";
@@ -18,6 +22,12 @@ public class StaticFilePlugin implements Plugin
     private String FileReq;
     private String PathReq;
 
+    /**
+     * If a file can be found at the path specified by the Request, it feels suitable for handling
+     * that request.
+     * @param req The Request
+     * @return canHandle score
+     */
     @Override
     public float canHandle(Request req)
     {
@@ -37,6 +47,12 @@ public class StaticFilePlugin implements Plugin
         }
     }
 
+    /**
+     * Returns the file at the URL of the request. Also sets content-type.
+     * If it can't find a file, it returns the index.html
+     * @param req The Request
+     * @return Response
+     */
     @Override
     public Response handle(Request req)
     {
@@ -56,7 +72,7 @@ public class StaticFilePlugin implements Plugin
 
         Resp.setStatusCode(200);
         Resp.setContent(content);
-        if (req.getUrl().getExtension() == "html")
+        if (req.getUrl().getExtension().equals("html"))
             Resp.setContentType("text/html");
         else
             Resp.setContentType("file");

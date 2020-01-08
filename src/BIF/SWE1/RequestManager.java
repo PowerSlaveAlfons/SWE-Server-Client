@@ -61,6 +61,8 @@ public class RequestManager implements Request
             this.parseHeaders(reader);
         } catch (IOException e) {};
 
+
+
         if (result.split("\\n\\s*\\n", 2).length > 1)
         {
             this.Content = result.split("\\n\\s*\\n", 2)[1];

@@ -9,6 +9,9 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements the PluginManager interface
+ */
 public class PluginManagerCreator implements PluginManager {
 
 
@@ -20,27 +23,43 @@ public class PluginManagerCreator implements PluginManager {
     private File directory = new File("src" + File.separatorChar + pack.replace('.', File.separatorChar));
     private FilenameFilter filter = (dir, name) -> name.endsWith(nameSuffix);
 
+    /**
+     * Constructor, needed to collect and "mount" the plugins
+     */
     PluginManagerCreator()
     {
         Defaults = gatherPlugins();
         // adding all default Plugins one-by-one
         add("AllElseFailsPlugin");
-       // add("NaviPlugin");
-        //add("TemperaturePlugin");
+        add("NaviPlugin");
+        add("TemperaturePlugin");
         add("ToLowerPlugin");
         add("StaticFilePlugin");
         add("TestPlugin");
     }
+
+    /**
+     * Returns a list of Plugins
+     * @return List<Plugin>
+     */
     @Override
     public List<Plugin> getPlugins() {
         return this.Plugins;
     }
 
+    /**
+     * Adds a Plugin by object reference
+     * @param plugin The Plugin that wants to be added
+     */
     @Override
     public void add(Plugin plugin) {
         this.Plugins.add(plugin);
     }
 
+    /**
+     * Adds a Plugin by name
+     * @param plugin
+     */
     @Override
     public void add(String plugin) {
         // check if searched plugin is available
@@ -80,6 +99,11 @@ public class PluginManagerCreator implements PluginManager {
         }
     }
 
+    /**
+     * Finds the Plugin that returns the highest canHandle score in order to let that plugin do the work
+     * @param request The HTTP Request
+     * @return Plugin
+     */
     public Plugin getBestHandlePlugin(Request request) {
         float maxHandleValue = 0.0f;
         Plugin suitablePlugin = null;
@@ -94,7 +118,9 @@ public class PluginManagerCreator implements PluginManager {
         return suitablePlugin;
     }
 
-
+    /**
+     * Clears all mounted Plugins
+     */
         @Override
     public void clear() {
         this.Plugins.clear();

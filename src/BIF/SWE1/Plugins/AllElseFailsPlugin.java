@@ -5,14 +5,27 @@ import BIF.SWE1.interfaces.Plugin;
 import BIF.SWE1.interfaces.Request;
 import BIF.SWE1.interfaces.Response;
 
+/**
+ * Is called when no other plugin was found to handle the request, puts out an error
+ */
 public class AllElseFailsPlugin implements Plugin
 {
+    /**
+     * Always returns 0.1f.
+     * @param req The Request
+     * @return canHandle score
+     */
     @Override
     public float canHandle(Request req)
     {
         return 0.1f;
     }
 
+    /**
+     * Creates a response with the error message
+     * @param req The Request
+     * @return Response
+     */
     @Override
     public Response handle(Request req)
     {

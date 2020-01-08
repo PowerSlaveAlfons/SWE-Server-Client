@@ -27,9 +27,8 @@ public class Temperature {
      */
     public String createQuery() {
         StringBuilder builder = new StringBuilder();
-        builder.append("insert into SENSORDATA (TEMPERATURE, SECONDS, DATE) VALUES(");
-        builder.append(temperature).append(", ");
-        builder.append(seconds).append(", '");
+        builder.append("insert into TEMPERATURE (VALUE, DATE) VALUES(");
+        builder.append(temperature).append(", '");
         builder.append(date).append("')");
         return builder.toString();
     }

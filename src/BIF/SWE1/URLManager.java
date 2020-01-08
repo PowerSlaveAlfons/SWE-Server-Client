@@ -6,6 +6,10 @@ import javax.print.attribute.standard.MediaSize;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * An URL object, takes care of seperating the URL into it's fragments, paths, folders and whatnot
+ */
+
 public class URLManager implements Url
 {
 
@@ -19,6 +23,10 @@ public class URLManager implements Url
     private boolean hasParameters = false;
     private boolean hasFragment = false;
 
+    /**
+     * Constructor, when creating the URL, a lot of the seperating is already being done
+     * @param rawUrlIn The URL as a String
+     */
     URLManager(String rawUrlIn)
     {
         this.rawUrl = rawUrlIn;
@@ -52,7 +60,10 @@ public class URLManager implements Url
         }
     }
 
-
+    /**
+     * Returns the raw URL
+     * @return String
+     */
 
     @Override
     public String getRawUrl()
@@ -60,7 +71,10 @@ public class URLManager implements Url
         return this.rawUrl;
     }
 
-
+    /**
+     * Returns the Path, for example if a file is in a folder
+     * @return String
+     */
     @Override
     public String getPath()
     {
@@ -69,12 +83,20 @@ public class URLManager implements Url
         return this.Path;
     }
 
+    /**
+     * Returns all parameters
+     * @return Map<String, String>
+     */
     @Override
     public Map<String, String> getParameter()
     {
         return this.Parameters;
     }
 
+    /**
+     * Returns the number of Parameters
+     * @return int
+     */
     @Override
     public int getParameterCount()
     {
@@ -83,6 +105,10 @@ public class URLManager implements Url
         return this.Parameters.size();
     }
 
+    /**
+     * Returns all Segments as a String Array.
+     * @return String[]
+     */
     @Override
     public String[] getSegments()
     {
@@ -95,6 +121,10 @@ public class URLManager implements Url
         return this.Segments;
     }
 
+    /**
+     * Returns the filename
+     * @return String
+     */
     @Override
     public String getFileName()
     {
@@ -104,6 +134,10 @@ public class URLManager implements Url
         return this.FileName;
     }
 
+    /**
+     * Returns the extension
+     * @return String
+     */
     @Override
     public String getExtension()
     {
@@ -113,6 +147,10 @@ public class URLManager implements Url
         return this.Extension;
     }
 
+    /**
+     * Returns the Fragment
+     * @return String
+     */
     @Override
     public String getFragment()
     {
